@@ -1,0 +1,53 @@
+#Compilador
+CXX = g++
+
+# Where to find
+ODIR = obj
+
+# Flags passed to the C++ compiler.
+CXXFLAGS += -g -Wall -Wextra -pthread  -Weffc++
+
+TESTS = gtest
+MAIN = testa_soma_string_stdin
+
+all : $(TESTS)
+
+
+.PHONY: clean
+
+clean:
+	rm -f $(ODIR)/*.o
+
+
+#compilar todos os objetos outra pasta
+$(ODIR)/%.o: %.c
+	$(CXX) $(CXXFLAGS) -c $<
+
+string_soma.o : string_soma.c string_soma.h
+
+
+#executavel principal
+main: testa_soma_string_stdin.o string_soma.o
+	$(CXX) $(CXXFLAGS) -o $(MAIN) $^
+
+#junçao das funcoes com o header de teste
+gtest : testa_string_soma.o string_soma.o
+	$(CXX) $(CXXFLAGS)  -o $@ $^  -lgtest -lgtest_main -lpthread
+
+
+
+
+# Builds a sample test.  A test should link with either gtest.a or
+# gtest_main.a, depending on whether it defines its own main()
+# function.
+
+#testa_soma_string_stdin.o: testa_soma_string_stdin.c
+#	$(CXX) $(CXXFLAGS) -c $<
+
+#codigo a ser testado
+#	$(CXX) $(CXXFLAGS) -c $(USER_DIR)/string_soma.c
+
+#codigo de rotina de testes
+#testa_string_soma.o : testa_string_soma.c
+#	$(CXX) $(CXXFLAGS) -c testa_string_soma.c -I..
+
