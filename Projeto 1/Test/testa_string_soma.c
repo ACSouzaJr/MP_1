@@ -20,6 +20,22 @@ TEST(Soma, ManyLines){
     EXPECT_EQ (3, soma_string("1\n\n\n,\n\n\n2\n"));
 }
 
+TEST (Invalido, NumNegativo){
+    EXPECT_EQ (-1, soma_string("1,2,-3\n"));
+    EXPECT_EQ (-1, soma_string("-1,2\n"));
+    EXPECT_EQ (-1, soma_string("-1,-2\n"));
+    EXPECT_EQ (-1, soma_string("1,-2\n"));
+    EXPECT_EQ (-1, soma_string("1\n,-2\n"));
+}
+
+TEST (Ignorar, MaiorMil){
+    EXPECT_EQ (1, soma_string("1,2000\n"));
+    EXPECT_EQ (3, soma_string("3,5000\n"));
+    EXPECT_EQ (5, soma_string("3000,5\n"));
+    EXPECT_EQ (3, soma_string("3\n,5000\n"));
+    EXPECT_EQ (5, soma_string("3\n,2\n,5000\n"));
+
+}
 
 //testes falhos
 
@@ -43,28 +59,14 @@ TEST (Invalido, DelimFalso){
 
 TEST (Invalido, SemFim){
     EXPECT_EQ (-1, soma_string("1,2"));
+    EXPECT_EQ (-1, soma_string("1\n,2"));
+    EXPECT_EQ (-1, soma_string("1\n,2\n,3"));
 }
 
 TEST (Invalido, Espaco){
     EXPECT_EQ (-1, soma_string("1,2 \n"));
 }
 
-TEST (Invalido, NumNegativo){
-    EXPECT_EQ (-1, soma_string("1,2,-3\n"));
-    EXPECT_EQ (-1, soma_string("-1,2\n"));
-    EXPECT_EQ (-1, soma_string("-1,-2\n"));
-    EXPECT_EQ (-1, soma_string("1,-2\n"));
-    EXPECT_EQ (-1, soma_string("1\n,-2\n"));
-}
-
-TEST (Ignorar, MaiorMil){
-    EXPECT_EQ (1, soma_string("1,2000\n"));
-    EXPECT_EQ (3, soma_string("3,5000\n"));
-    EXPECT_EQ (5, soma_string("3000,5\n"));
-    EXPECT_EQ (3, soma_string("3\n,5000\n"));
-    EXPECT_EQ (5, soma_string("3\n,2\n,5000\n"));
-
-}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

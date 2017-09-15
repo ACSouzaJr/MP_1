@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include "string_soma.h"
 
-int IsNegative(int Num);
-int HighValue(int Num);
+bool IsNegative(int Num);
+bool HighValue(int Num);
+bool NoEnd(const char * string_entrada);
 
 int soma_string(const char* string_entrada){
 
@@ -12,9 +13,14 @@ int soma_string(const char* string_entrada){
     char *string, *entrada;
     int soma = 0;
 
-    //trsnsforma de const para char*
+    //Se possui nao possui  \n no final
+    if (NoEnd(string_entrada)) return -1;
+
+
+    //transforma de const para char*
     entrada = strdup(string_entrada);
     string = strtok(entrada, ",");
+
 
     while(string != NULL){
 
@@ -32,12 +38,17 @@ int soma_string(const char* string_entrada){
     return soma;
 }
 
-int IsNegative(int Num){
+bool IsNegative(int Num){
 
-    return Num < 0 ? 1:0;
+    return Num < 0;
 }
 
-int HighValue(int Num){
+bool HighValue(int Num){
 
-    return Num > 1000 ? 1:0;
+    return Num > 1000;
+}
+
+bool NoEnd(const char * string_entrada){
+
+    return (strrchr(string_entrada, '\n') == NULL || !(strrchr(string_entrada, '\n') == (string_entrada + (strlen(string_entrada)-1))));
 }
