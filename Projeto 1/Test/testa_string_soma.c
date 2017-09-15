@@ -60,6 +60,9 @@ TEST (Invalido, NumNegativo){
 TEST (Ignorar, MaiorMil){
     EXPECT_EQ (1, soma_string("1,2000\n"));
     EXPECT_EQ (3, soma_string("3,5000\n"));
+    EXPECT_EQ (5, soma_string("3000,5\n"));
+    EXPECT_EQ (3, soma_string("3\n,5000\n"));
+    EXPECT_EQ (5, soma_string("3\n,2\n,5000\n"));
 
 }
 

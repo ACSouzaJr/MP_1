@@ -18,15 +18,14 @@ int soma_string(const char* string_entrada){
 
     while(string != NULL){
 
-        if (IsNegative(atoi(string))) return -1;
-        //if (!HighValue(atoi(string)))
+        if (IsNegative(atoi(string))) return -1; //se x<0 para
 
+        if (!HighValue(atoi(string))){  //se x> 1000 ignora
 
-        soma += atoi(string);
+            soma += atoi(string);
+        }
         //puts(string);
         string = strtok(NULL, ", ");
-
-
 
     }
 
@@ -38,7 +37,7 @@ int IsNegative(int Num){
     return Num < 0 ? 1:0;
 }
 
-/*int HighValue(int Num){
+int HighValue(int Num){
 
     return Num > 1000 ? 1:0;
-}*/
+}
