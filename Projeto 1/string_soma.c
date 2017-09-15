@@ -16,6 +16,9 @@ int soma_string(const char* string_entrada){
     //Se possui nao possui  \n no final
     if (NoEnd(string_entrada)) return -1;
 
+    //Se possui espaço
+    if (!(strpbrk(string_entrada, " ") == NULL)) return -1;
+
 
     //transforma de const para char*
     entrada = strdup(string_entrada);

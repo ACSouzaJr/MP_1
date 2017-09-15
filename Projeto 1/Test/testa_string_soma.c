@@ -37,7 +37,16 @@ TEST (Ignorar, MaiorMil){
 
 }
 
+TEST (Invalido, SemFim){
+    EXPECT_EQ (-1, soma_string("1,2"));
+    EXPECT_EQ (-1, soma_string("1\n,2"));
+    EXPECT_EQ (-1, soma_string("1\n,2\n,3"));
+}
+
 //testes falhos
+TEST (Invalido, Espaco){
+    EXPECT_EQ (-1, soma_string("1,2 \n"));
+}
 
 TEST (Invalido, LimiteLinha){
     EXPECT_EQ (-1, soma_string("1,2,3,4\n"));
@@ -57,15 +66,6 @@ TEST (Invalido, DelimFalso){
     EXPECT_EQ(-1, soma_string("1;2\n"));
 }
 
-TEST (Invalido, SemFim){
-    EXPECT_EQ (-1, soma_string("1,2"));
-    EXPECT_EQ (-1, soma_string("1\n,2"));
-    EXPECT_EQ (-1, soma_string("1\n,2\n,3"));
-}
-
-TEST (Invalido, Espaco){
-    EXPECT_EQ (-1, soma_string("1,2 \n"));
-}
 
 
 int main(int argc, char **argv) {
