@@ -10,6 +10,7 @@ bool NoEnd(const char * );
 bool ManyDelimitador(const char *, char *);
 bool LimitLinha(const char *, char *);
 int CountNum(const char *, char *);
+bool MinNum(const char *, char *);
 
 int soma_string(const char* string_entrada){
 
@@ -33,16 +34,15 @@ int soma_string(const char* string_entrada){
     //se tem 2 delimitadores seguidos
     if (ManyDelimitador(string_entrada, delimitadores)) return -1;
 
+    //menos de 2 numeros
+    if (MinNum(string_entrada, delimitadores)) return -1;
+
     //0 a 3 num por linha
     if (LimitLinha(string_entrada, delimitadores)) return -1;
 
 
     //divide string por delimitadores
     string = strtok(entrada, delimitadores);
-
-    //puts(string);
-    //printf("%d\n", strlen(string));
-
 
     while(string != NULL){
 
@@ -107,4 +107,12 @@ int CountNum(const char * string, char *delimitador){
     }
 
     return count;
+}
+
+bool MinNum(const char *string_entrada, char delimitador[]){
+
+    char *string = strdup(string_entrada);
+    string[strlen(string)-1] = '\0';
+
+    return CountNum(string, delimitador) < 2;
 }
