@@ -32,6 +32,7 @@ sample1_unittest : testa_string_soma.o string_soma.o
 
 check:
 	cppcheck --enable=warning ..
+	#cppcheck --enable=warning .
 
 gcov:
 	gcov -n testa_string_soma.c

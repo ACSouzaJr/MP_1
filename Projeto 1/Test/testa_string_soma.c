@@ -59,6 +59,7 @@ TEST (Invalido, DelimFalso){
 
 TEST (Invalido, LimiteLinha){
     EXPECT_EQ (-1, soma_string("1,2,3,4\n"));
+    EXPECT_EQ (-1, soma_string("1,2\n,3,4,5,6\n"));
 }
 
 TEST (Invalido, SingNum){

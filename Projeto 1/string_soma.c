@@ -6,8 +6,10 @@
 
 bool IsNegative(int Num);
 bool HighValue(int Num);
-bool NoEnd(char * );
+bool NoEnd(const char * );
 bool ManyDelimitador(const char *, char *);
+bool LimitLinha(const char *, char *);
+int CountNum(const char *, char *);
 
 int soma_string(const char* string_entrada){
 
@@ -20,7 +22,7 @@ int soma_string(const char* string_entrada){
     entrada = strdup(string_entrada);
 
     //Se possui nao possui  \n no final
-    if (NoEnd(entrada)) return -1;
+    if (NoEnd(string_entrada)) return -1;
 
     //Se possui espaço
     if (!(strpbrk(string_entrada, " ") == NULL)) return -1;
@@ -30,6 +32,9 @@ int soma_string(const char* string_entrada){
 
     //se tem 2 delimitadores seguidos
     if (ManyDelimitador(string_entrada, delimitadores)) return -1;
+
+    //0 a 3 num por linha
+    if (LimitLinha(string_entrada, delimitadores)) return -1;
 
 
     //divide string por delimitadores
@@ -67,7 +72,7 @@ bool HighValue(int Num){
     return Num > 1000;
 }
 
-bool NoEnd(char * string){
+bool NoEnd(const char * string){
 
     return (string[strlen(string)-1] != '\n');
 }
@@ -75,5 +80,31 @@ bool NoEnd(char * string){
 bool ManyDelimitador(const char *string, char delimitadores[]){
 
     return *(strpbrk(string, delimitadores)) == *(strpbrk(string, delimitadores)+1);
-    //return (strpbrk(string, delimitadores) == strpbrk(string+1, delimitadores));
+}
+
+bool LimitLinha(const char * string_entrada, char delimitador[]){
+
+    char *linha;
+    char *string = strdup(string_entrada);
+
+
+    while ((linha = strtok_r(string, "\n", &string))){
+        if (CountNum(linha, delimitador) > 3) return true;
+
+    }
+
+    return false;
+}
+
+int CountNum(const char * string, char *delimitador){
+
+    int count = 0;
+    char *c;
+    char *linha = strdup(string);
+
+    while ((c = strtok_r(linha, delimitador, &linha))){
+            count++;
+    }
+
+    return count;
 }
