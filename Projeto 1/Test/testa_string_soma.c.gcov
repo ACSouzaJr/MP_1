@@ -1,0 +1,80 @@
+        -:    0:Source:testa_string_soma.c
+        -:    0:Graph:testa_string_soma.gcno
+        -:    0:Data:testa_string_soma.gcda
+        -:    0:Runs:2
+        -:    0:Programs:2
+        -:    0:Source is newer than graph
+        -:    1:#include <gtest/gtest.h>
+        -:    2:#include "string_soma.h"
+        -:    3:
+       10:    4:    TEST (Soma, PosNum){
+        2:    5:        EXPECT_EQ (5, soma_string("3,2\n"));
+        2:    6:        EXPECT_EQ (3, soma_string("1,2\n"));
+        2:    7:        EXPECT_EQ (6, soma_string("3,2,1\n"));
+        2:    8:    }
+        -:    9:
+       10:   10:    TEST (Valido, LimiteLinha){
+        2:   11:        EXPECT_EQ (3, soma_string("\n1,2\n"));
+        2:   12:        EXPECT_EQ (6, soma_string("1,2,3\n"));
+        2:   13:        EXPECT_EQ (10, soma_string("1,2,3\n,4\n"));
+        2:   14:        EXPECT_EQ (6, soma_string("1\n,2\n,3\n"));
+        2:   15:    }
+        -:   16:
+       10:   17:    TEST(Soma, ManyLines){
+        2:   18:        EXPECT_EQ (3, soma_string("1\n,2\n"));
+        2:   19:        EXPECT_EQ (3, soma_string("1\n\n\n,2\n"));
+        2:   20:        EXPECT_EQ (3, soma_string("1\n\n\n,\n\n\n2\n"));
+        2:   21:    }
+        -:   22:
+       10:   23:    TEST (Invalido, NumNegativo){
+        2:   24:        EXPECT_EQ (-1, soma_string("1,2,-3\n"));
+        2:   25:        EXPECT_EQ (-1, soma_string("-1,2\n"));
+        2:   26:        EXPECT_EQ (-1, soma_string("-1,-2\n"));
+        2:   27:        EXPECT_EQ (-1, soma_string("1,-2\n"));
+        2:   28:        EXPECT_EQ (-1, soma_string("1\n,-2\n"));
+        2:   29:    }
+        -:   30:
+       10:   31:    TEST (Ignorar, MaiorMil){
+        2:   32:        EXPECT_EQ (1, soma_string("1,2000\n"));
+        2:   33:        EXPECT_EQ (3, soma_string("3,5000\n"));
+        2:   34:        EXPECT_EQ (5, soma_string("3000,5\n"));
+        2:   35:        EXPECT_EQ (3, soma_string("3\n,5000\n"));
+        2:   36:        EXPECT_EQ (5, soma_string("3\n,2\n,5000\n"));
+        -:   37:
+        2:   38:    }
+        -:   39:
+       10:   40:    TEST (Invalido, SemFim){
+        2:   41:        EXPECT_EQ (-1, soma_string("1,2"));
+        2:   42:        EXPECT_EQ (-1, soma_string("1\n,2"));
+        2:   43:        EXPECT_EQ (-1, soma_string("1\n,2\n,3"));
+        2:   44:    }
+        -:   45:
+        -:   46://testes falhos
+       10:   47:TEST (Invalido, Espaco){
+        2:   48:    EXPECT_EQ (-1, soma_string("1,2 \n"));
+        2:   49:}
+        -:   50:
+       10:   51:TEST (Invalido, Virgulas){
+        2:   52:    EXPECT_EQ(-1, soma_string("1,,2\n"));
+        2:   53:}
+        -:   54:
+       10:   55:TEST (Invalido, DelimFalso){
+        2:   56:    EXPECT_EQ(-1, soma_string("1;2\n"));
+        2:   57:}
+        2:   58:
+        2:   59:
+        -:   60:TEST (Invalido, LimiteLinha){
+       10:   61:    EXPECT_EQ (-1, soma_string("1,2,3,4\n"));
+        2:   62:}
+        2:   63:
+        -:   64:TEST (Invalido, SingNum){
+       10:   65:    EXPECT_EQ (-1, soma_string("1,\n"));
+        2:   66:    EXPECT_EQ (-1, soma_string(",2\n"));
+        2:   67:    EXPECT_EQ (-1, soma_string(",\n"));
+        -:   68:}
+        -:   69:
+        -:   70:
+        2:   71:int main(int argc, char **argv) {
+        2:   72:  ::testing::InitGoogleTest(&argc, argv);
+        2:   73:  return RUN_ALL_TESTS();
+        6:   74:}
