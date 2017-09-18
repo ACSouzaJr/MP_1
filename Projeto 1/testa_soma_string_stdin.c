@@ -6,10 +6,18 @@
 int main(int argc, char const *argv[])
 {
 
-    char string[50];
+    char c;
     int soma;
+    char string[200];
 
-    gets(string);
+    //leitura da stdin
+    int i = 0;
+    while ((c = fgetc(stdin)) != EOF){
+        string[i] = c;
+        ++i;
+    }
+    string[i] = '\0';
+
 
     soma = soma_string(string);
 

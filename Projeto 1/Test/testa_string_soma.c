@@ -1,6 +1,25 @@
 #include <gtest/gtest.h>
 #include "string_soma.h"
 
+TEST (Valido, Delimitador){
+    EXPECT_EQ(8, soma_string("//[;]\n2,3;3\n"));
+    EXPECT_EQ(9, soma_string("//[**]\n2,4\n**3\n"));
+    EXPECT_EQ(6, soma_string("//[;]\n1\n\n,2\n\n;3\n"));
+    EXPECT_EQ(6, soma_string("//[;]\n\n1,2;3\n"));
+    EXPECT_EQ(9, soma_string("//[;]\n1,5;3\n"));
+    EXPECT_EQ (1, soma_string("//[;]\n1;2000\n"));
+    EXPECT_EQ (1, soma_string("//[;]\n1\n;2000\n"));
+    EXPECT_EQ (10, soma_string("//[;][***][&&]\n1;2***3\n&&4\n"));
+    EXPECT_EQ (5, soma_string("//[;]\n2;3\n"));
+    EXPECT_EQ (-1, soma_string("//[;]\n2;3"));
+    EXPECT_EQ (9, soma_string("//[***]\n2***3***4\n"));
+    EXPECT_EQ (-1, soma_string("//[;]2;3\n"));
+}
+
+TEST (Invalido, Delimitador){
+    EXPECT_EQ (-1, soma_string("//[;]\n1;-2\n"));
+}
+
 TEST (Soma, PosNum){
     EXPECT_EQ (5, soma_string("3,2\n"));
     EXPECT_EQ (3, soma_string("1,2\n"));
@@ -66,6 +85,7 @@ TEST (Invalido, SingNum){
     EXPECT_EQ (-1, soma_string(",2\n"));
     EXPECT_EQ (-1, soma_string(",\n"));
 }
+
 
 
 int main(int argc, char **argv) {

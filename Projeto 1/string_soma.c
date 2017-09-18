@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "string_soma.h"
 
-
+char *Delimitador(const char *);
 bool IsNegative(int Num);
 bool HighValue(int Num);
 bool NoEnd(const char * );
@@ -12,32 +12,33 @@ bool LimitLinha(const char *, char *);
 int CountNum(const char *, char *);
 bool MinNum(const char *, char *);
 
+
 int soma_string(const char* string_entrada){
 
     //separa a string por delimitadores, a cada separaçao soma numero em soma.
     char *string, *entrada;
     int soma = 0;
-    char delimitadores[] = ",";
+    char *delimitadores;
 
     //transforma de const para char*
     entrada = strdup(string_entrada);
 
-    //Se possui nao possui  \n no final
+    //verifica se tem novos delimitadores
+    if((delimitadores = Delimitador(string_entrada)) == NULL) return -1;
+
+    //verifica se possui  \n no final
     if (NoEnd(string_entrada)) return -1;
 
-    //Se possui espaço
+    //verifica se possui espaço
     if (!(strpbrk(string_entrada, " ") == NULL)) return -1;
 
-    //Se possui delimitadores validos
+    //verifica se possui delimitadores validos
     if (strpbrk(string_entrada, delimitadores) == NULL) return -1;
 
-    //se tem 2 delimitadores seguidos
-    if (ManyDelimitador(string_entrada, delimitadores)) return -1;
-
-    //menos de 2 numeros
+    //verifica se possui apenas 1 numero
     if (MinNum(string_entrada, delimitadores)) return -1;
 
-    //0 a 3 num por linha
+    //verifica se possui 0 a 3 num por linha
     if (LimitLinha(string_entrada, delimitadores)) return -1;
 
 
@@ -77,9 +78,12 @@ bool NoEnd(const char * string){
     return (string[strlen(string)-1] != '\n');
 }
 
-bool ManyDelimitador(const char *string, char delimitadores[]){
+bool MinNum(const char *string_entrada, char delimitador[]){
 
-    return *(strpbrk(string, delimitadores)) == *(strpbrk(string, delimitadores)+1);
+    char *string = strdup(string_entrada);
+    string[strlen(string)-1] = '\0';
+
+    return CountNum(string, strcat(delimitador, "/[]")) < 2;
 }
 
 bool LimitLinha(const char * string_entrada, char delimitador[]){
@@ -96,6 +100,25 @@ bool LimitLinha(const char * string_entrada, char delimitador[]){
     return false;
 }
 
+int CountDelimitador(const char *string_entrada, char delimitadores[]){
+
+    char *string = strdup(string_entrada);
+    int count = 0;
+
+    //se possuir delimitadores extras
+    if (string_entrada[1] == '/')
+        strtok_r(string, "\n", &string);
+
+    string = strpbrk(string+1, delimitadores);
+    while (string != NULL){
+        ++count;
+        string = strpbrk(string+1, delimitadores);
+    }
+
+    return (count/strlen(delimitadores));
+
+}
+
 int CountNum(const char * string, char *delimitador){
 
     int count = 0;
@@ -103,16 +126,51 @@ int CountNum(const char * string, char *delimitador){
     char *linha = strdup(string);
 
     while ((c = strtok_r(linha, delimitador, &linha))){
-            count++;
+            ++count;
     }
 
     return count;
 }
 
-bool MinNum(const char *string_entrada, char delimitador[]){
 
-    char *string = strdup(string_entrada);
-    string[strlen(string)-1] = '\0';
+char * Delimitador(const char *string_entrada){
 
-    return CountNum(string, delimitador) < 2;
+    if (string_entrada[1] == '/'){
+
+        if ((*(strrchr(string_entrada, ']') + 1)) != '\n') return NULL;
+
+        char *entrada = strdup(string_entrada);
+        entrada = strtok_r(entrada, "\n", &entrada);
+
+        int ndelimitador = 0;
+        char *delimitador = (char *) malloc(sizeof(char)*(strrchr(string_entrada, ']') - strchr(string_entrada, '[')));//tamanho
+
+        strcpy(delimitador, ",/[]");
+
+        entrada = strtok(entrada, "/[]");
+        while(entrada != NULL){
+
+            strcat(delimitador, entrada);
+            ndelimitador += CountDelimitador(string_entrada, entrada);
+            entrada = strtok(NULL, "/[]");
+
+        }
+
+        //caso possua a virgula
+        ndelimitador += CountDelimitador(string_entrada, strdup(","));
+
+        //se nao possui delimitadores validos
+        if ((CountNum(string_entrada, delimitador)-1) != ndelimitador) return NULL;
+
+        return delimitador;
+    }
+    else{
+
+        char *delimitador = strdup(",");
+
+        if (CountDelimitador(string_entrada, delimitador) != (CountNum(string_entrada, delimitador)-1)) return NULL;
+
+        return strdup(",");
+    }
+
 }
