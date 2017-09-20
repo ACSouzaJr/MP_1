@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
-#include "string_soma.h"
+#include <string_soma.h>
+
 
 TEST (Valido, Delimitador){
     EXPECT_EQ(8, soma_string("//[;]\n2,3;3\n"));
@@ -14,6 +15,7 @@ TEST (Valido, Delimitador){
     EXPECT_EQ (-1, soma_string("//[;]\n2;3"));
     EXPECT_EQ (9, soma_string("//[***]\n2***3***4\n"));
     EXPECT_EQ (-1, soma_string("//[;]2;3\n"));
+    EXPECT_EQ (-1, soma_string("//[;]2,;3\n"));
 }
 
 TEST (Invalido, Delimitador){

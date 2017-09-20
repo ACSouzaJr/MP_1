@@ -1,0 +1,7 @@
+Na pasta src
+para compilar testes:
+make teste
+para compilar main:
+make
+para utilizar gcov:
+make gcov
