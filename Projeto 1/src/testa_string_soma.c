@@ -12,13 +12,13 @@ TEST (Valido, Delimitador){
     EXPECT_EQ (1, soma_string("//[;]\n1\n;2000\n"));
     EXPECT_EQ (10, soma_string("//[;][***][&&]\n1;2***3\n&&4\n"));
     EXPECT_EQ (5, soma_string("//[;]\n2;3\n"));
-    EXPECT_EQ (-1, soma_string("//[;]\n2;3"));
     EXPECT_EQ (9, soma_string("//[***]\n2***3***4\n"));
-    EXPECT_EQ (-1, soma_string("//[;]2;3\n"));
-    EXPECT_EQ (-1, soma_string("//[;]2,;3\n"));
 }
 
 TEST (Invalido, Delimitador){
+    EXPECT_EQ (-1, soma_string("//[;]\n2;3"));
+    EXPECT_EQ (-1, soma_string("//[;]2;3\n"));
+    EXPECT_EQ (-1, soma_string("//[;]2,;3\n"));
     EXPECT_EQ (-1, soma_string("//[;]\n1;-2\n"));
 }
 
